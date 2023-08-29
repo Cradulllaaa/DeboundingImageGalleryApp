@@ -1,10 +1,10 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faStar} from "@fortawesome/free-regular-svg-icons"
 import {faStar as SolidfaStar} from "@fortawesome/free-solid-svg-icons"
-import { TextField,IconButton } from '@mui/material';
+import { TextField,IconButton, Button } from '@mui/material';
 
 
 function ImageReducer(state,action) {
@@ -44,7 +44,19 @@ function ImageCard({selectedImage,addAction}) {
     p: 4,
   };
   
+  useEffect(() => {
+    console.log("Actions",imageActions)
+  },[imageActions])
 
+  function handleAddAction() {
+    if(imageActions != selectedImage) {
+      addAction(imageActions.title,imageActions)
+    }
+    else {
+      return;
+    }
+  }
+  
   return(
     <div>
     {
@@ -55,13 +67,13 @@ function ImageCard({selectedImage,addAction}) {
           id="title"
           label="imgTitle"
           value={imageActions.title ? imageActions.title : "Undefined Title"} 
-          onChange={() => {}}
+          onChange={(e) => {ImageDispatcher({type: "SET_TITLE",title: e.target.value})}}
           
         />
         
-        <IconButton aria-label="Favorite" onClick={() => ImageDispatcher({type:"SET_FAVOURITE","FAVOURITE": !selectedImage.FAVOURITE})}>
+        <IconButton aria-label="Favorite" onClick={() => ImageDispatcher({type:"SET_FAVOURITE",Favourite: !imageActions.Favourite})}>
           {
-            selectedImage.Favourite ?
+            imageActions.Favourite ?
             <FontAwesomeIcon icon={SolidfaStar} color='red' />
             : 
             <FontAwesomeIcon icon={faStar} color='red'/>
@@ -70,10 +82,20 @@ function ImageCard({selectedImage,addAction}) {
       </Typography>
       
       
-      <img src={selectedImage.img ? selectedImage.img : ""} width={700} ></img>
+      <img src={imageActions.img ? imageActions.img : ""} width={700} ></img>
       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
         Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+        
       </Typography>
+      
+      {/* Add a Submit Button into this Modal Page , call the addAction function sent into this code by HomePage
+        To include our current changes into All Actions
+      */}
+
+
+      {/* <Button variant="text" color="default" onClick=()=>handleAddAction()>
+        Submit
+      </Button> */}
     </Box>
     
     : 

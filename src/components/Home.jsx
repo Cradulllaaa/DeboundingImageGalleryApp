@@ -10,6 +10,9 @@ import ImageCard from "./ImageCard";
 
 function HomePage() {
   
+  // AllActions  + Backend merged version for data
+
+
   // Initial Import of Images (needs to be sent into a React Context)
   const [images,setImages] = useState([])
   const accessMetaData = {}
@@ -17,7 +20,28 @@ function HomePage() {
   // Created a Modal for opening to image to setup Actions
   const [open, setOpen] = useState(false);
   const [selectedImage,setSelectedImage] = useState();
+ 
+  const AllActions = {};
+
+
+  function addAction(id,action) {
+    AllActions[id] = action
+  }
+
+  // General Debounce code for any functional usecase 
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
   
+  // Declare an API Call to sync the data from client-side to server-side
+
   
   const handleOpen = (evt) => {
     setOpen(true);
@@ -30,6 +54,25 @@ function HomePage() {
   
   useEffect(() => {
 
+    // useContext React 
+
+    // Call an API from backend to access images and set it to images variable
+    // After that replace all itemData variable name with images variable name
+    // use the setImages function to set Image
+
+    /*
+    [
+      {
+        img: pixel render data
+        metadata1:
+        metadata2:
+        . . . . . . 
+
+      },
+      . . . . . . .
+    ]
+    
+    */
     // Setting up an easier way to access elements based on id one-time loading
     // This could be lazy loaded as well
     // Also get the data in a paginated way 
@@ -70,7 +113,7 @@ function HomePage() {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <ImageCard selectedImage={selectedImage}></ImageCard>
+      <ImageCard selectedImage={selectedImage} addAction={addAction}></ImageCard>
       
       
       </Modal>
