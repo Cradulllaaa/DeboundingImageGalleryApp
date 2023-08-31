@@ -27,7 +27,7 @@ function ImageReducer(state,action) {
 }
 
 
-function ImageCard({selectedImage,addAction}) {
+function ImageCard({selectedImage,addAction,handleClose}) {
 
   const [imageActions, ImageDispatcher] = useReducer(ImageReducer, selectedImage);
   
@@ -45,16 +45,17 @@ function ImageCard({selectedImage,addAction}) {
   };
   
   useEffect(() => {
-    console.log("Actions",imageActions)
+    // console.log("Actions",imageActions)
   },[imageActions])
 
   function handleAddAction() {
     if(imageActions != selectedImage) {
-      addAction(imageActions.title,imageActions)
+      addAction(imageActions)
     }
     else {
       return;
     }
+    handleClose();
   }
   
   return(
@@ -93,9 +94,10 @@ function ImageCard({selectedImage,addAction}) {
       */}
 
 
-      {/* <Button variant="text" color="default" onClick=()=>handleAddAction()>
+      <Button variant="text" onClick={()=>handleAddAction()}>
         Submit
-      </Button> */}
+      </Button>
+
     </Box>
     
     : 
